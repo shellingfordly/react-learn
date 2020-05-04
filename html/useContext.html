@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    const {useState, useEffect, useContext, createContext} = React
+    // 1. 使用createContext创建上下文
+    const Context = createContext()
+    function App(){
+      const [data,setNumber] = useState('数据')
+      return (
+        // 2. 使用Context下的Provider属性需要传递数据的组件，通过value属性传递数据对象
+        <Context.Provider value={{data,setNumber}}>
+          <Son1 />
+          <Son2 />
+        </Context.Provider>
+      )
+    }
+
+    function Son1(){
+      // 3. 在子组件中通过执行useContext函数并传入创建的上下文Context返回其Provider组件传递的数据
+      const { data } = useContext(Context)
+      return (
+        <div>
+          子组件1---{data}
+        </div>
+      )
+    }
+
+    function Son2(){
+      // 4. 其他组件同理
+      const { data } = useContext(Context)
+      return (
+        <div>
+            子组件2---{data}
+        </div>
+      )
+    }
+
+    ReactDOM.render(<div>
+        <App />
+      </div>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

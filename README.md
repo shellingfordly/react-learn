@@ -1047,3 +1047,45 @@ function App(){
   )
 }
 ```
+
+
+### useContext
+> 使子组件、孙子组件可以不用层级传递，就直接获取到父组件的数据
+
+1. 使用createContext创建上下文
+2. 通过Context.Provider传递数据
+3. 通过useContext()获取数据
+
+```jsx
+const {useState, useEffect, useContext, createContext} = React
+// 1. 使用createContext创建上下文
+const Context = createContext()
+function App(){
+  const [data,setNumber] = useState('数据')
+  return (
+    // 2. 使用Context下的Provider属性需要传递数据的组件，通过value属性传递数据对象
+    <Context.Provider value={{data,setNumber}}>
+      <Son1 />
+      <Son2 />
+    </Context.Provider>
+  )
+}
+function Son1(){
+  // 3. 在子组件中通过执行useContext函数并传入创建的上下文Context返回其Provider组件传递的数据
+  const { data } = useContext(Context)
+  return (
+    <div>
+      子组件1---{data}
+    </div>
+  )
+}
+function Son2(){
+  // 4. 其他组件同理
+  const { data } = useContext(Context)
+  return (
+    <div>
+        子组件2---{data}
+    </div>
+  )
+}
+```
