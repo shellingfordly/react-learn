@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/15.6.2/react.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.js"></script>
+  <script type="text/babel">
+    const { Component } = React
+
+    class Add extends Component {
+      handleClick = ()=>{
+        this.props.handleAppClick()
+      }
+      handleChange = (e)=>{
+        console.log(e.target.value)
+        this.props.handleAppChange(e)
+      }
+     
+      render() {
+        const {thing,list} = this.props
+        return (
+          <directives>
+            <input type='text' value={thing} onChange={this.handleChange}/>
+            <button onClick={this.handleClick}>点击添加</button>
+          </directives>
+        )
+      }
+    }
+
+    class List extends Component {
+      deleteLi = (i)=>{
+        this.props.appDeleteLi(i)
+      }
+
+
+      render() {
+        const {list} = this.props
+        return (
+          <directives>
+            <ul>
+              {list.map((item,i)=><li key={item}>{item}  <button onClick={()=>{this.deleteLi(i)}}>X</button></li>)}  
+            </ul>
+          </directives>
+        )
+      }
+    }
+
+    class App extends Component {
+      constructor(){
+        super()
+        this.state = {
+          thing: '',
+          list: ['asdad','aasd']
+        }
+      }
+      handleAppClick = ()=>{
+        const { list, thing } = this.state
+        list.push(thing)
+        this.setState({
+          list,
+          thing: ""
+        })
+      }
+
+      handleAppChange = (e)=>{
+        this.setState({
+          thing: e.target.value
+        })
+      }
+
+      /* appDeleteLi(){}
+        不写成箭头函数的话，this指向List组件的this.props
+      */
+
+      // 箭头函数
+      appDeleteLi = (i)=>{
+        const { list, thing } = this.state
+        list.splice(i,1) // 删除
+        this.setState({ list }) 
+      }
+
+      render(){
+        const {thing,list} = this.state
+        return (
+          <directives>
+            <Add thing={thing} 
+              list={list} 
+              handleAppClick={this.handleAppClick}
+              handleAppChange={this.handleAppChange}/>
+            <List list={list} appDeleteLi={this.appDeleteLi}/>
+          </directives>
+        )
+      }
+    }
+    ReactDOM.render(<App/>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

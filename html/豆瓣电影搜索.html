@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/babel">
+    const {useState,useEffect,} = React
+
+    function App(){
+      const [movies, useMovies] = useState([])
+      const [keyword, useKeyword] = useState('')
+
+      const changeKeyword = (value)=>{
+        useKeyword(value)
+      }
+      const search = async ()=>{
+        const data = await axios.get(`https://www.omdbapi.com/?s=${keyword}&apikey=4a3b711b`)
+        const movies = data.data.Search
+        useKeyword('')
+        useMovies(movies)
+      }
+
+      return (
+        <div>
+          <Search keyword={keyword} 
+            changeKeyword={changeKeyword}
+            search={search}/>
+          <Content movies={movies}/>
+        </div>
+      )
+    }
+
+    function Search(props){
+      const onChangeSearch = (e)=>{
+        props.changeKeyword( e.target.value )
+      }
+      const onKeyDownSearch = (e)=>{
+        if(e.keyCode === 13)
+          props.search()
+      }
+      return (
+        <div>
+          <input type="text" 
+            value={props.keyword} 
+            onChange={onChangeSearch}
+            onKeyDown={onKeyDownSearch}/>
+        </div>
+      )
+    }
+    function Content(props){
+      return (
+        <div className="content">
+          <ul>
+            {props.movies.map((item,i)=>{
+              return (
+                <li key={i}>
+                  <p>{item.Title}</p>  
+                  <p>{item.Year} - {item.Type}</p>  
+                  <img src={item.Poster} width='100' alt="" />
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )
+    }
+
+    ReactDOM.render(<div>
+        <App />
+      </div>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

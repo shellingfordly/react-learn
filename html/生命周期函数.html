@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/15.6.2/react.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.js"></script>
+  <script type="text/babel">
+    const { Component } = React
+    class Son extends Component {
+      componentWillReceiveProps(){
+        console.log("props改变")
+      }
+
+      render() {
+        console.log("list子组件render")
+        return (
+          <div>子组件</div>
+        )
+      }
+    }
+
+    class App extends Component {
+      constructor(){
+        super()
+        this.state = {
+          count: 0
+        }
+      }
+      handle= ()=>{
+        this.setState({
+          count: 1
+        })
+      }
+
+      render(){
+        console.log("父组件render")
+        return (
+          <div>
+            父组件{this.state.count}
+            <button onClick={this.handle}>点击</button>
+            <Son count={this.state.count}/>
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<App/>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

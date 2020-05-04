@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/15.6.2/react.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-transition-group/3.0.0/react-transition-group.js"></script>
+  <script type="text/babel">
+    const { CSSTransition } = ReactTransitionGroup
+    class App extends React.Component {
+      constructor(props){
+        super()
+        this.state = {
+          show: true
+        }
+      }
+
+      handleClick(){
+        let {show} = this.state
+        this.setState({show: !show})
+      }
+
+      render(){
+        let {show} = this.state
+        return (
+          <div>
+              <button onClick={this.handleClick.bind(this)}>点击</button>
+              <CSSTransition timeout={1000} in={this.state.show}>
+                <h2>点击显示/隐藏</h2>
+              </CSSTransition>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<App/>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

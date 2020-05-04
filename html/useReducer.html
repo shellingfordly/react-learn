@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    const {useState,useEffect,useReducer} = React
+    // 定义仓库初始数据
+    const number = 0
+    // 定义reducer  数据更新
+    const reducer = (state, action) =>{
+      switch (action.type) {
+        case 'add':
+          return state+action.data
+        case 'minus':
+          return state-action.data
+        default:
+          return state
+      }
+    }
+
+    function App(){
+      // 执行useReducer  返回仓库数据，以及更新方法
+      // store仓库：返回number数据
+      // dispatch更新方式：执行reducer
+      // 再次更新数据时，不会再将初始值number传给仓库，而是直接获取仓库中保存的上一次的数据
+      const [store, dispatch] = useReducer(reducer, number)
+
+      const add = ()=>{
+        // dispatch -- 触发reducer更新数据
+        dispatch({type:'add', data: 1})
+      }
+
+      const minus = ()=>{
+        dispatch({type:'minus', data: 1})
+      }
+      return (
+        <div>
+          number：  {store}
+          <button onClick={add}>增加</button>
+          <button onClick={minus}>减少</button>
+        </div>
+      )
+    }
+
+    ReactDOM.render(<div>
+        <App />
+      </div>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

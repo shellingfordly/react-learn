@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/15.6.2/react.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.js"></script>
+  <script type="text/babel">
+    class Person3 extends React.Component {
+      handleClick(e){
+        e.preventDefault(); // 阻止默认事件
+        // this.sex = React.createRef()
+        // consolee.log(this.sex)
+        console.log(this.refs.username)
+        console.log(this.psd)
+      }
+      render(){
+        return (
+          <form action="/" method='get'>
+            用户:<input type='text' ref='username'/><br/>
+            密码:<input type='text' ref={psd=>this.psd=psd}/><br/>
+            性别:<input type='text' ref={this.sex}/><br/>
+            <input type='submit' onClick={this.handleClick.bind(this)}/>
+          </form>
+        )
+      }
+    }
+
+    ReactDOM.render(<Person3/>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/15.6.2/react.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pubsub-js/1.7.0/pubsub.js"></script>
+  <script type="text/babel">
+    const { Component } = React
+    class Son1 extends Component {
+      state = {
+        msg: "我是son1组件的数据"
+      }
+      sendMsg = ()=>{
+        // 触发receiveSon1Msg事件
+        PubSub.publish('receiveSon1Msg',this.state.msg)
+      }
+      render() {
+        return (
+          <div>
+            子组件son1
+            <button onClick={this.sendMsg}>点击发生数据</button>
+          </div>
+        )
+      }
+    }
+    class Son2 extends Component {
+
+      componentDidMount(){
+        // 订阅事件，等待son1触发
+        PubSub.subscribe('receiveSon1Msg',function(type,msg){
+          // 当触发receiveSon1Msg事件时，执行回调函数
+          console.log(type,msg)
+        })
+      }
+      
+      render() {
+        return (
+          <div>子组件son2</div>
+        )
+      }
+    }
+    class App extends Component {
+      render(){
+        return (
+          <div>
+            <div>父组件</div>
+            <Son1/>
+            <Son2/>
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<App/>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

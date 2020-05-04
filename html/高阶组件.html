@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/15.6.2/react.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.js"></script>
+  <script type="text/babel">
+    class App extends React.Component {
+      render(){
+        console.log(this.props.value)
+        return (
+          <input type="text" {...this.props} />
+        )
+      }
+    }
+    const highComponent = BaseComponent=>{
+      return class extends React.Component {
+        state = {
+          value: ''
+         }
+        onchange = (e)=>{
+          this.setState({value:e.target.value})
+        }
+        render (){
+          const obj = {
+            value: this.state.value,
+            onChange: this.onchange
+          }
+          return <BaseComponent {...obj}/>
+        }
+      }
+    }
+    const C1 =  highComponent(App)
+    const C2 =  highComponent(App)
+
+    ReactDOM.render(<div><C1/><C2/></div>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

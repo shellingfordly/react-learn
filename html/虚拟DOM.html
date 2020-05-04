@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/15.6.2/react.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.js"></script>
+  <!-- <script>
+    let vDom1 = React.createElement('h2', {
+      id: 'hhh',
+      title: '我是h2'
+    }, '我是虚拟DOM')
+    ReactDOM.render(vDom1, document.getElementById('app'))
+  </script> -->
+
+  <script type="text/babel">
+    let a = 'hhh'
+    function fn(){
+      console.log(1)
+    }
+    let arr = [1,2,3,4,5,6]
+    // let vDom = <h2 id='hhhhh' className={a} onClick={fn}>我是虚拟DOM</h2>
+    let vDom2 = (
+      <ul>
+        {arr.reduce((pre, next) => {
+          pre.push(<li key={next}>{next}</li>)
+          return pre
+        }, [])}
+      </ul>
+    )
+    let vDom3 = <h3 style={{backgroundColor:'pink'}}></h3>
+    ReactDOM.render(vDom2, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

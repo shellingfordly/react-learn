@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script type="text/babel">
+    const {useState,useEffect,useReducer} = React
+    // 定义仓库初始数据
+    const state =  {
+      keyword: '',
+      movies: []
+    }
+    // 定义reducer  数据更新
+    const reducer = (state, action) =>{
+      switch (action.type) {
+        case 'movies':
+          return {
+            keyword: '',
+            movies: action.data,
+          }
+        case 'keyword':
+          return {
+            keyword: action.data,
+            movies: state.movies
+          }
+        default:
+          return state
+      }
+    }
+
+
+    function App(){
+      const [store, dispatch] = useReducer(reducer, state)
+      const {keyword,movies} = store
+      const changeKeyword = (value)=>{
+        dispatch({ type: 'keyword', data: value})
+      }
+      const search = async ()=>{
+        const data = await axios.get(`https://www.omdbapi.com/?s=${keyword}&apikey=4a3b711b`)
+        const movies = data.data.Search
+        dispatch({ type: 'movies', data: movies})
+      }
+      useEffect(()=>{
+        (async function(){
+          const data = await axios.get(`https://www.omdbapi.com/?s=man&apikey=4a3b711b`)
+          const movies = data.data.Search
+          dispatch({ type: 'movies', data: movies})
+        })()
+      },[])
+      return (
+        <div>
+          <Search keyword={keyword} 
+            changeKeyword={changeKeyword}
+            search={search}/>
+          <Content movies={movies}/>
+        </div>
+      )
+    }
+
+    function Search(props){
+      const onChangeSearch = (e)=>{
+        props.changeKeyword( e.target.value )
+      }
+      const onKeyDownSearch = (e)=>{
+        if(e.keyCode === 13)
+          props.search()
+      }
+      return (
+        <div>
+          <input type="text" 
+            value={props.keyword} 
+            onChange={onChangeSearch}
+            onKeyDown={onKeyDownSearch}/>
+        </div>
+      )
+    }
+
+    function Content(props){
+      return (
+        <div className="content">
+          <ul>
+            {props.movies.map((item,i)=>{
+              return (
+                <li key={i}>
+                  <p>{item.Title}</p>  
+                  <p>{item.Year} - {item.Type}</p>  
+                  <img src={item.Poster} width='100' alt="" />
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )
+    }
+
+    ReactDOM.render(<div>
+        <App />
+      </div>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react/15.6.2/react.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.js"></script>
+  <script type="text/babel">
+    // function Person(){
+    //   return <h2>我是函数组件</h2>
+    // }
+
+    // class Person1 extends React.Component {
+    //   constructor(props){
+    //     super()
+    //     this.state = {
+    //       count: 0
+    //     }
+    //   }
+
+    //   handleClick(){
+    //     let {count} = this.state
+    //     count++
+    //     this.setState({count})
+    //   }
+
+    //   render(){
+    //     console.log(this) // this是Person的实例化对象
+    //     return <h2 onClick={this.handleClick.bind(this)}>我是es6类组件，{this.state.count}</h2>
+    //   }
+    // }
+    // let obj = {
+    //   name: 'name',
+    //   age: '18',
+    //   sex: '男'
+    // }
+
+
+
+    class Person2 extends React.Component {
+      constructor(props){
+        super()
+        this.state = {
+          display: 'block',
+          show: true
+        }
+      }
+
+      handleClick(){
+        let {display,show} = this.state
+        display = show ? 'block': 'none'
+        show = !show
+        this.setState({display,show})
+      }
+
+      render(){
+        let obj = {display: this.state.display}
+        return (
+          <div>
+              <button onClick={this.handleClick.bind(this)}>点击</button>
+              <h2 style={obj}>点击显示/隐藏</h2>
+          </div>
+        )
+      }
+    }
+
+
+    class Person3 extends React.Component {
+      constructor(props){
+        super()
+        this.state = {
+          show: true
+        }
+      }
+
+      handleClick(){
+        let {show} = this.state
+        this.setState({show: !show})
+      }
+
+      render(){
+        let {show} = this.state
+        return (
+          <div>
+              <button onClick={this.handleClick.bind(this)}>点击</button>
+              <h2 style={{display: show? 'block':'none'}}>点击显示/隐藏</h2>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<Person3/>, document.getElementById('app'))
+  </script>
+</body>
+
+</html>
