@@ -1,3 +1,5 @@
+# react
+
 ## 虚拟DOM和真实DOM
 * 虚拟DOM是一个对象，只有10多个属性（轻，方便操作，节能）
 * 真实DOM也是一个对象，有很多属性（更重）
@@ -422,7 +424,7 @@ class App extends Component {
 * onEntered 动画结束后，触发函数
 
 
-* 类名
+#### 类名
 ```css
 .enter {}
 .enter-active {}
